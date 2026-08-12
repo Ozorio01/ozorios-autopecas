@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Vendas — AutoPeças POS</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ===== NAVEGAÇÃO LATERAL ===== -->
+  <nav class="nav-lateral">
+    <div class="nav-logo">OP</div>
+
+    <button class="nav-item ativo">
+      🛒
+      <span class="tooltip">Catálogo &amp; Venda</span>
+    </button>
+    <button class="nav-item">
+      👥
+      <span class="tooltip">Clientes</span>
+    </button>
+    <button class="nav-item">
+      🧾
+      <span class="tooltip">Notas emitidas</span>
+    </button>
+    <button class="nav-item">
+      📊
+      <span class="tooltip">Vendas do dia</span>
+    </button>
+    <button class="nav-item">
+      📦
+      <span class="tooltip">Estoque</span>
+    </button>
+
+    <div class="nav-lateral-rodape">
+      <button class="nav-item">
+        ⚙️
+        <span class="tooltip">Configurações</span>
+      </button>
+      <button class="nav-item" id="btn-sair">
+        🚪
+        <span class="tooltip">Sair</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== ÁREA PRINCIPAL: CATÁLOGO ===== -->
+  <main class="principal">
+    <header class="topo">
+      <div class="busca-produto">
+        <span class="icone">🔍</span>
+        <input type="text" id="busca-input" placeholder="Buscar por nome ou código da peça... (ex: FR-1102)">
+      </div>
+
+      <div class="topo-direita">
+        <div class="chip-turno"><span class="bolinha"></span> Caixa aberto — Turno Manhã</div>
+        <div class="vendedor-tag">
+          <div class="avatar-vendedor">RN</div>
+          <div>
+            <div class="nome">Rafael Nogueira</div>
+            <div class="matricula">Matrícula V-014</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="categorias" id="lista-categorias"></div>
+
+    <section class="grade-produtos" id="grade-produtos"></section>
+  </main>
+
+  <!-- ===== PAINEL DE VENDA (DIREITA) ===== -->
+  <aside class="painel-venda">
+
+    <div class="painel-secao-cliente">
+      <div class="rotulo">Cliente da venda</div>
+      <div class="seletor-cliente">
+        <input type="text" id="busca-cliente" placeholder="Buscar cliente cadastrado (nome ou CPF/CNPJ)">
+        <div class="lista-clientes-flutuante" id="lista-clientes"></div>
+      </div>
+      <div class="cliente-selecionado" id="cliente-selecionado">
+        <div class="info">
+          <div class="nome-cli" id="cliente-nome"></div>
+          <div class="doc-cli" id="cliente-doc"></div>
+        </div>
+        <button class="remover-cliente" id="remover-cliente" title="Remover cliente">✕</button>
+      </div>
+    </div>
+
+    <div class="painel-itens">
+      <div class="rotulo">Itens da venda</div>
+      <div id="lista-itens-venda"></div>
+    </div>
+
+    <div class="painel-totais">
+      <div class="linha-total">
+        <span>Subtotal</span>
+        <span id="txt-subtotal">R$ 0,00</span>
+      </div>
+      <div class="linha-total desconto">
+        <span>Desconto (vendedor)</span>
+        <span id="txt-desconto">R$ 0,00</span>
+      </div>
+
+      <div class="odometro">
+        <span class="rotulo-odo">Total da venda</span>
+        <span class="valor-odo" id="txt-total">R$ 0,00</span>
+      </div>
+
+      <div class="formas-pagamento">
+        <button class="forma-pag selecionada" data-forma="Pix">Pix</button>
+        <button class="forma-pag" data-forma="Cartão">Cartão</button>
+        <button class="forma-pag" data-forma="Dinheiro">Dinheiro</button>
+      </div>
+
+      <button class="btn btn-ambar btn-finalizar" id="btn-finalizar" disabled>
+        Emitir nota e finalizar venda
+      </button>
+    </div>
+  </aside>
+
+</div>
+
+<!-- ===== MODAL DE NOTA EMITIDA ===== -->
+<div class="overlay-modal" id="overlay-nota">
+  <div class="modal-nota">
+    <div class="modal-nota-topo">
+      <div class="status">✔ Venda concluída</div>
+      <h3 id="modal-numero-nota">Nota Nº 000000</h3>
+    </div>
+    <div class="modal-nota-corpo">
+      <div class="linha-nota"><span>Cliente</span><span id="modal-cliente">—</span></div>
+      <div class="linha-nota"><span>Vendedor</span><span>Rafael Nogueira</span></div>
+      <div class="linha-nota"><span>Forma de pagamento</span><span id="modal-pagamento">—</span></div>
+      <div class="linha-nota"><span>Itens</span><span id="modal-itens">0</span></div>
+      <div class="linha-nota total-nota"><span>Total</span><span id="modal-total">R$ 0,00</span></div>
+    </div>
+    <div class="modal-nota-acoes">
+      <button class="btn btn-fantasma" id="btn-fechar-nota">Fechar</button>
+      <button class="btn btn-aco" id="btn-nova-venda">Iniciar nova venda</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
