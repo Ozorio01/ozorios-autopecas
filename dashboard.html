@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Vendas — AutoPeças POS</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ===== NAVEGAÇÃO LATERAL ===== -->
+  <nav class="nav-lateral">
+    <div class="nav-topo-marca">
+      <div class="nav-logo">OP</div>
+      <div class="nav-marca-texto">
+        <div class="nome-sistema">OficinaPOS</div>
+        <div class="loja-atual">Loja Matriz — Campinas</div>
+      </div>
+    </div>
+
+    <button class="nav-item ativo">
+      <span class="nav-icone">🛒</span>
+      <span class="nav-texto">Vender</span>
+    </button>
+    <button class="nav-item">
+      <span class="nav-icone">👥</span>
+      <span class="nav-texto">Clientes</span>
+    </button>
+    <button class="nav-item">
+      <span class="nav-icone">🧾</span>
+      <span class="nav-texto">Notas emitidas</span>
+    </button>
+    <button class="nav-item">
+      <span class="nav-icone">📊</span>
+      <span class="nav-texto">Vendas do dia</span>
+    </button>
+    <button class="nav-item">
+      <span class="nav-icone">📦</span>
+      <span class="nav-texto">Estoque</span>
+    </button>
+
+    <div class="nav-lateral-rodape">
+      <button class="nav-item">
+        <span class="nav-icone">⚙️</span>
+        <span class="nav-texto">Configurações</span>
+      </button>
+      <button class="nav-item" id="btn-sair">
+        <span class="nav-icone">🚪</span>
+        <span class="nav-texto">Sair</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== ÁREA PRINCIPAL: CATÁLOGO ===== -->
+  <main class="principal">
+    <header class="topo">
+      <div class="busca-produto">
+        <span class="icone">🔍</span>
+        <input type="text" id="busca-input" placeholder="Buscar por nome, código ou fabricante... (ex: FR-1102 ou Bosch)">
+      </div>
+
+      <div class="topo-direita">
+        <div class="chip-turno"><span class="bolinha"></span> Caixa aberto — Turno Manhã</div>
+        <div class="vendedor-tag">
+          <div class="avatar-vendedor">RN</div>
+          <div>
+            <div class="nome">Rafael Nogueira</div>
+            <div class="matricula">Matrícula V-014</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="categorias" id="lista-categorias"></div>
+
+    <section class="grade-produtos" id="grade-produtos"></section>
+  </main>
+
+  <!-- ===== PAINEL DE VENDA (DIREITA) ===== -->
+  <aside class="painel-venda">
+
+    <div class="passo-a-passo" id="passo-a-passo">
+      <div class="passo" data-passo="1">
+        <div class="passo-bolha">1</div>
+        <div class="passo-label">Cliente</div>
+      </div>
+      <div class="passo-linha"></div>
+      <div class="passo" data-passo="2">
+        <div class="passo-bolha">2</div>
+        <div class="passo-label">Produtos</div>
+      </div>
+      <div class="passo-linha"></div>
+      <div class="passo" data-passo="3">
+        <div class="passo-bolha">3</div>
+        <div class="passo-label">Pagamento</div>
+      </div>
+      <div class="passo-linha"></div>
+      <div class="passo" data-passo="4">
+        <div class="passo-bolha">4</div>
+        <div class="passo-label">Nota</div>
+      </div>
+    </div>
+
+    <div class="painel-secao-cliente">
+      <div class="rotulo">1. Selecione o cliente</div>
+      <div class="seletor-cliente">
+        <input type="text" id="busca-cliente" placeholder="Buscar cliente cadastrado (nome ou CPF/CNPJ)">
+        <div class="lista-clientes-flutuante" id="lista-clientes"></div>
+      </div>
+      <div class="cliente-selecionado" id="cliente-selecionado">
+        <div class="info">
+          <div class="nome-cli" id="cliente-nome"></div>
+          <div class="doc-cli" id="cliente-doc"></div>
+        </div>
+        <button class="remover-cliente" id="remover-cliente" title="Remover cliente">✕</button>
+      </div>
+    </div>
+
+    <div class="painel-itens">
+      <div class="rotulo">2. Produtos adicionados</div>
+      <div id="lista-itens-venda"></div>
+    </div>
+
+    <div class="painel-totais">
+      <div class="linha-total">
+        <span>Subtotal (preço de tabela)</span>
+        <span id="txt-subtotal">R$ 0,00</span>
+      </div>
+
+      <div class="campo-desconto">
+        <label for="input-desconto">Desconto que você vai dar</label>
+        <div class="campo-desconto-linha">
+          <input type="number" id="input-desconto" min="0" step="0.01" placeholder="0,00">
+          <div class="toggle-tipo-desconto">
+            <button class="tipo-desconto ativo" data-tipo="percentual">%</button>
+            <button class="tipo-desconto" data-tipo="valor">R$</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="linha-total desconto">
+        <span>Total do desconto</span>
+        <span id="txt-desconto">R$ 0,00</span>
+      </div>
+
+      <div class="odometro">
+        <span class="rotulo-odo">Total da venda</span>
+        <span class="valor-odo" id="txt-total">R$ 0,00</span>
+      </div>
+
+      <div class="margem-vendedor" id="margem-vendedor">
+        <div class="margem-topo">
+          <span>Sua margem nesta venda</span>
+          <span class="margem-percentual" id="margem-percentual">0%</span>
+        </div>
+        <div class="margem-barra"><div class="margem-barra-preenchida" id="margem-barra"></div></div>
+        <div class="margem-detalhe" id="margem-detalhe">Adicione produtos para calcular</div>
+      </div>
+
+      <div class="rotulo" style="margin: 14px 0 8px;">3. Forma de pagamento</div>
+      <div class="formas-pagamento">
+        <button class="forma-pag selecionada" data-forma="Pix">Pix</button>
+        <button class="forma-pag" data-forma="Cartão">Cartão</button>
+        <button class="forma-pag" data-forma="Dinheiro">Dinheiro</button>
+      </div>
+
+      <button class="btn btn-ambar btn-finalizar" id="btn-finalizar" disabled>
+        4. Emitir nota e finalizar venda
+      </button>
+    </div>
+  </aside>
+
+</div>
+
+<!-- ===== MODAL DE NOTA EMITIDA ===== -->
+<div class="overlay-modal" id="overlay-nota">
+  <div class="modal-nota">
+    <div class="modal-nota-topo">
+      <div class="status">✔ Venda concluída</div>
+      <h3 id="modal-numero-nota">Nota Nº 000000</h3>
+    </div>
+    <div class="modal-nota-corpo">
+      <div class="linha-nota"><span>Cliente</span><span id="modal-cliente">—</span></div>
+      <div class="linha-nota"><span>Vendedor</span><span>Rafael Nogueira</span></div>
+      <div class="linha-nota"><span>Forma de pagamento</span><span id="modal-pagamento">—</span></div>
+      <div class="linha-nota"><span>Itens</span><span id="modal-itens">0</span></div>
+      <div class="linha-nota"><span>CFOP</span><span>5.102 — Venda dentro do estado</span></div>
+      <div class="linha-nota chave-acesso"><span>Chave de acesso (simulada)</span><span id="modal-chave">—</span></div>
+      <div class="linha-nota total-nota"><span>Total</span><span id="modal-total">R$ 0,00</span></div>
+    </div>
+    <div class="modal-nota-acoes">
+      <button class="btn btn-fantasma" id="btn-fechar-nota">Fechar</button>
+      <button class="btn btn-aco" id="btn-nova-venda">Iniciar nova venda</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
